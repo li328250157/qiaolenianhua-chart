@@ -1,0 +1,24 @@
+<template>
+  <div class="dashboard-container chart-container">
+    <component :is="currentRole" />
+  </div>
+</template>
+
+<script>
+import adminDashboard from './admin'
+
+export default {
+  name: 'Dashboard',
+  components: { adminDashboard},
+  data() {
+    return {
+      currentRole: 'adminDashboard'
+    }
+  },
+  computed: {
+  },
+  created() {
+
+  }
+}
+</script>
