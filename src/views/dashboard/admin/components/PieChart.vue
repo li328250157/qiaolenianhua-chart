@@ -4,8 +4,9 @@
 
 <script>
 import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
+require("../components/chalk");  // echarts theme
 import resize from './mixins/resize'
+import { param } from './mixins';
 
 export default {
   mixins: [resize],
@@ -54,7 +55,7 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el, 'chalk')
       this.setpieOptions(this.chartData)
     },
     setpieOptions(data){
@@ -75,32 +76,21 @@ export default {
             },
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+              formatter: function (params) {
+                console.log(params)
+                // let str = '<div><p>' + params[0].axisValue +'</p></div>'
+                // for (let i = 0; i < params.length; i++) {
+                //   str += params[i].marker + ' ' + params[i].seriesName +':'+params[i].data.name + '<br>'
+                // }
+                // return str;
+              }
             },
             legend: {
                 orient: 'vertical',
                 left: 'left',
                 data: data.legend
             },
-            graphic: [
-                        {
-                            type: 'text',
-                            z: 100,
-                            left: '200',
-                            top: 'middle',
-                            style: {
-                                fill: '#333',
-                                text: [
-                                    '横轴表示温度，单位是°C',
-                                    '纵轴表示高度，单位是km',
-                                    '右上角有一个图片做的水印',
-                                    '这个文本块可以放在图中各',
-                                    '种位置'
-                                ].join('\n'),
-                                font: '14px Microsoft YaHei'
-                            }
-                        }
-            ],
+            graphic: [data.text],
             series : [
                 {
                     name: '访问来源',
@@ -114,7 +104,51 @@ export default {
                             shadowOffsetX: 0,
                             shadowColor: 'rgba(0, 0, 0, 0.5)'
                         }
+                    },
+            label: {
+                normal: {
+                    formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                    backgroundColor: '#000',
+                    borderColor: '#aaa',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    // shadowBlur:3,
+                    // shadowOffsetX: 2,
+                    // shadowOffsetY: 2,
+                    // shadowColor: '#999',
+                    // padding: [0, 7],
+                    rich: {
+                        a: {
+                            color: '#999',
+                            lineHeight: 22,
+                            align: 'center'
+                        },
+                        // abg: {
+                        //     backgroundColor: '#333',
+                        //     width: '100%',
+                        //     align: 'right',
+                        //     height: 22,
+                        //     borderRadius: [4, 4, 0, 0]
+                        // },
+                        hr: {
+                            borderColor: '#aaa',
+                            width: '100%',
+                            borderWidth: 0.5,
+                            height: 0
+                        },
+                        b: {
+                            fontSize: 16,
+                            lineHeight: 33
+                        },
+                        per: {
+                            color: '#eee',
+                            backgroundColor: '#334455',
+                            padding: [2, 4],
+                            borderRadius: 2
+                        }
                     }
+                }
+            }
                 }
             ]
         })
